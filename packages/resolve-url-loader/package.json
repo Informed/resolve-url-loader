@@ -36,7 +36,7 @@
     "lint": "jshint --exclude **/node_modules index.js lib"
   },
   "dependencies": {
-    "adjust-sourcemap-loader": "^2.0.0",
+    "adjust-sourcemap-loader": "https://github.com/bholloway/adjust-sourcemap-loader.git#871d0f94d7de41f0c1a1cf32643a62b1de3625f4",
     "convert-source-map": "^1.7.0",
     "loader-utils": "^1.4.0",
     "postcss": "^7.0.32",
