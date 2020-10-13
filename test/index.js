@@ -10,8 +10,8 @@ const tape = require('blue-tape');
 const {init, layer, cwd, fs, env, meta, exec} = require('test-my-cli');
 const {assign} = Object;
 
-const {assertExitCodeZero} = require('./lib/assert');
-const {testBase} = require('./cases/common/tests');
+const {assertExitCodeZero, bail} = require('./lib/assert');
+const {testBase} = require('./cases/common/test');
 
 // tests are located in resolve-url-loader package which might differ from package under test
 const PLATFORMS_DIR = compose(normalize, join)(__dirname, '..', 'packages', 'resolve-url-loader', 'test');
@@ -92,8 +92,12 @@ filterTests()
           env({
             PATH: dirname(process.execPath)
           }),
+          exec('enforce-node-version'),
+          assertExitCodeZero('enforce node version'),
+          bail,
           exec('npm install'),
-          assertExitCodeZero('npm install')
+          assertExitCodeZero('npm install'),
+          bail
         )
       )
     );
@@ -116,6 +120,12 @@ filterTests()
           },
           layer: {
             keep: (process.env.KEEP === 'true')
+          },
+          fs: {
+            debug: (process.env.DEBUG === 'fs')
+          },
+          exec: {
+            debug: (process.env.DEBUG === 'exec')
           }
         }),
         ...filterTests(platform).map(engine =>
